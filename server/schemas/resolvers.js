@@ -4,7 +4,7 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    me: async (context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
@@ -20,28 +20,28 @@ const resolvers = {
         .select('-__v -password')
         .populate('books')
     },
-    user: async ({ username }) => {
+    user: async (parent, { username }) => {
       return User.findOne({ username })
         .select('-__v -password')
         .populate('books')
     },
-    books: async ({ username }) => {
+    books: async (parent, { username }) => {
       const params = username ? { username } : {};
       return Book.find(params).sort({ createdAt: -1 });
     },
-    book: async ({ _id }) => {
+    book: async (parent, { _id }) => {
       return Book.findOne({ _id });
     }
   },
 
   Mutation: {
-    addUser: async (args) => {
+    addUser: async (parent, args) => {
       const user = await User.create(args);
       const token = signToken(user);
 
       return { token, user };
     },
-    login: async ({ email, password }) => {
+    login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
       if (!user) {
@@ -57,7 +57,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async (args, context) => {
+    saveBook: async (parent, args, context) => {
       if (context.user) {
         const book = await Book.create({ ...args, username: context.user.username });
 
@@ -72,7 +72,7 @@ const resolvers = {
 
       throw new AuthenticationError('You need to be logged in!');
     },
-    removeBook: async ({ bookId }, context) => {
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         const updatedBook = await Book.findOneAndUpdate(
           { _id: bookId },
