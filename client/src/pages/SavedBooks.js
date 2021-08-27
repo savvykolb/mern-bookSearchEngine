@@ -1,15 +1,15 @@
 import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import { REMOVE_BOOK } from '../utils/mutation';
-import { GET_ME } from '../utils/queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import Auth from '../utils/auth';
+import { GET_ME } from '../utils/queries';
+import { REMOVE_BOOK } from '../utils/mutation';
 import { removeBookId } from '../utils/localStorage';
+import Auth from '../utils/auth';
 
 const SavedBooks = () => {
-  const [removeBook] = useMutation (REMOVE_BOOK);
-  const [userData] = useQuery (GET_ME);
+  const [userData] = useQuery(GET_ME);
+  const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -20,13 +20,10 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await removeBook(bookId, token);
-
+      const response = await removeBook(bookId, token); 
       if (!response.ok) {
         throw new Error('something went wrong!');
-      }
-      
-      // upon success, remove book's id from localStorage
+      }     // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
@@ -35,7 +32,7 @@ const SavedBooks = () => {
 
   return (
     <>
-      <Jumbotron fluid className='text-light bg-dark'>
+      <Jumbotron fluid className="text-light bg-dark">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
@@ -49,13 +46,13 @@ const SavedBooks = () => {
         <CardColumns>
           {userData.savedBooks.map((book) => {
             return (
-              <Card key={book.bookId} border='dark'>
+              <Card key={book.bookId} border="dark">
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
-                  <p className='small'>Authors: {book.authors}</p>
+                  <p className="small">Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
+                  <Button className="btn-block btn-danger" onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
                 </Card.Body>
