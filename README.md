@@ -1,8 +1,5 @@
 # 21 MERN: Book Search Engine
 
-## Owned By
-
-Savannah Kolb
 
 ## About
 
@@ -27,3 +24,7 @@ A user can view their saved books on a separate page, as shown in the following 
 ## Deployed Site
 
 https://mernbook-search-engine.herokuapp.com/
+
+## Owned By
+
+Savannah Kolb
