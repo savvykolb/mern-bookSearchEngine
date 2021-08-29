@@ -17,10 +17,6 @@ The user can save books by clicking "Save This Book!" under each search result, 
 
 ![Animation shows user clicking "Save This Book!" button to save books that appear in search results. The button label changes to "Book Already Saved" after it is clicked and the book is saved.](./Assets/21-mern-homework-demo-02.gif)
 
-A user can view their saved books on a separate page, as shown in the following animation:
-
-![The Viewing Lernantino's Books page shows the books that the user Lernaninto has saved.](./Assets/21-mern-homework-demo-03.gif)
-
 ## Deployed Site
 
 https://mernbook-search-engine.herokuapp.com/
