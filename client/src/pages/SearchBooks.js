@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 
 import Auth from "../utils/auth";
-import { searchGoogleBooks } from "../utils/API";
+// import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
 import { useMutation } from "@apollo/client";
@@ -23,7 +23,7 @@ const SearchBooks = () => {
 
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
@@ -37,7 +37,9 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput);
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
+      );
 
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -72,16 +74,13 @@ const SearchBooks = () => {
     try {
       try {
         await saveBook({
-          variables: { book: bookToSave },
-        });
-        window.location.reload();
+          variables: { book: {...bookToSave },
+        }});
       } catch (err) {
-        console.log(err);
-      }
-
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+        console.log(err)}
+        setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
-      console.log(`Error ${err}`);
+      console.log(err)
     }
   };
 
